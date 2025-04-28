@@ -6,7 +6,8 @@
 #         Universidad Iberoamerica - Coordinacion de Ingenieria Mecatronica
 
 from tkinter import messagebox
-#import pigpio
+import pigpio
+import time
 
 SHLD1_GPIO = 4
 SHLD2_GPIO = 17
@@ -17,6 +18,13 @@ ELBW1_GPIO = 18
 ELBW2_GPIO = 23
 ELBW3_GPIO = 24
 ELBW4_GPIO = 25
+
+pi = pigpio.pi()
+if not pi.connected:
+     print('Pigpio daemon no se ha inicializad, correr "sudo systemctl start pigpiod"')
+     exit()
+else:
+     print('Daemon Pigpio inicializado, GPIO conectados')
 
 servo_gpios = {
     'shoulder_1': SHLD1_GPIO,
@@ -39,13 +47,6 @@ def execute_trajectory(waypoints):
     print('Waypoints', waypoints)
 
 def servo_set_angle(angle, gpio):
-    #pi = pigpio.pi()
-    #if not pi.connected:
-    #    print('Pigpio daemon no se ha inizializado, correr sudo systemctl start pigpiod')
-    #    exit()
-    #else:
-    #    print('Daemon Pigpio inizializado, GPIOs conectados')
-    
     try:
         # Verificar que el ángulo se encuentre entre 0 y 180 grados
         angle = float(angle)
@@ -55,8 +56,8 @@ def servo_set_angle(angle, gpio):
         
         # Aquí se incluye la lógica para mover el servo al ángulo deseado.
         print(f'Simulando colocar el servo del pin {gpio} en {angle} grados')
-        #pulse_width = int((angle / 180) * 1000+ 1000)
-        #pi.set_servo_pulsewidth(gpio, pulse_width)
+        pulse_width = int((angle / 180) * 1000+ 1000)
+        pi.set_servo_pulsewidth(gpio, pulse_width)
         return True
     except ValueError:
         messagebox.showerror('Valor inválido', f'El ángulo para el pin {gpio} debe ser un número.')
@@ -79,6 +80,7 @@ def execute_servos(sEntry1, sEntry2, sEntry3, sEntry4, eEntry1, eEntry2, eEntry3
     #Se recupera el gpio de cada servo y se manda actualizar su ángulo.
     for servo_name, angle_input in servo_angles.items():
         gpio_pin = servo_gpios[servo_name]
+        time.sleep(0.5)
         if not servo_set_angle(angle_input, gpio_pin):
             all_angles_set = False
     
@@ -88,21 +90,22 @@ def execute_servos(sEntry1, sEntry2, sEntry3, sEntry4, eEntry1, eEntry2, eEntry3
 
 def home():
     servo_angles = {}
-    servo_angles["shoulder_1"] = 20
-    servo_angles["shoulder_2"] = 130
-    servo_angles["shoulder_3"] = 170
-    servo_angles["shoulder_4"] = 20
-    servo_angles["elbow_1"] = 90
-    servo_angles["elbow_2"] = 90
-    servo_angles["elbow_3"] = 90
-    servo_angles["elbow_4"] = 90
+    servo_angles["shoulder_1"] = 90
+    servo_angles["shoulder_2"] = 90
+    servo_angles["shoulder_3"] = 90
+    servo_angles["shoulder_4"] = 90
+    servo_angles["elbow_1"] = 170
+    servo_angles["elbow_2"] = 20
+    servo_angles["elbow_3"] = 20
+    servo_angles["elbow_4"] = 170
 
     #Se recupera el gpio de cada servo y se manda actualizar su ángulo.
     for servo_name, angle_input in servo_angles.items():
         gpio_pin = servo_gpios[servo_name]
+        time.sleep(0.5)
         if not servo_set_angle(angle_input, gpio_pin):
             print('Error colocando los servos en home...')
 
     messagebox.showinfo('Ángulos actualizados', 'Se han colocado los servos en home')
 
-print('Error: correr vista para el main')
+print('Leyendo funciones de control...')
