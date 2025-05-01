@@ -360,6 +360,10 @@ execute_button.pack(side=tk.LEFT, padx=5)
 home_button = ttk.Button(button_frame, text='Set servos home', command=control.home)
 home_button.pack(side=tk.LEFT, padx=5)
 
+# Forward Button Test
+forward_button = ttk.Button(button_frame, text='Test Forward (1)', command=control.forward1)
+forward_button.pack(side=tk.LEFT, padx=5)
+
 # Add Tab 2 to notebook
 notebook.add(tab2, text='Servo Test')
 
