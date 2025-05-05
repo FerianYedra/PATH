@@ -47,6 +47,14 @@ SERVO_PULSE_RANGE = SERVO_MAX_PULSE - SERVO_MIN_PULSE
 DEFAULT_DURATION = 1.5
 STEP_DELAY = 0.1
 
+def update_values(step_entry, mov_entry):
+    STEP_DELAY = float(step_entry.get())
+    print(f'Step Delay actualizado a: {STEP_DELAY}')
+    DEFAULT_DURATION = float(mov_entry.get())
+    print(f'Duracion de movimiento actualizada a {DEFAULT_DURATION}')
+
+    messagebox.showinfo('Aviso', 'Valores actualizados')
+
 def angle_to_pulse(angle):
     angle = float(angle)
     angle = max(0, min(180, angle))
@@ -268,4 +276,17 @@ def forward1():
     servo_angles['shoulder_3'] = 90
     servo_angles['shoulder_4'] = 90
     move_servo(servo_angles)
+
+    #Test to complete 
+    servo_angles = {}
+    servo_angles["elbow_1"] = 170
+    servo_angles["elbow_2"] = 20
+    servo_angles["elbow_3"] = 20
+    servo_angles["elbow_4"] = 170
+    servo_angles["shoulder_1"] = 90
+    servo_angles["shoulder_2"] = 90
+    servo_angles["shoulder_3"] = 90
+    servo_angles["shoulder_4"] = 90
+    move_servo(servo_angles)
+
     messagebox.showinfo('Forward 1','Movimiento terminado')

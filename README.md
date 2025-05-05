@@ -1,8 +1,7 @@
 # PATH
 
 ## Summary
-For our degree project we will build a functional quadruped robot under the name PATH (Au-
-tonomous Platform for Heterogeneous Terrain. On this repo the team has implemented version control for the code that contains the Control and HMI functions of the code.
+For our degree project we will build a functional quadruped robot under the name PATH (Autonomous Platform for Heterogeneous Terrain. On this repo the team has implemented version control for the code that contains the Control and HMI functions of the code.
 
 ## Code Details
 For the code we worked using python 3 as we found it to be the most simple way to quickly implement the function for the GPIO's, the HMI using TkInter and some of the other existing libraries like Math, and Time.

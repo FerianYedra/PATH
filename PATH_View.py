@@ -121,6 +121,26 @@ def decrement_angle(entry_widget, step):
         entry_widget.delete(0, tk.END)
         entry_widget.insert(0, "0")
 
+
+def increment_step(entry_widget, step):
+    try:
+        current_step = float(entry_widget.get())
+        new_step = min(current_step + step, 3)
+        entry_widget.delete(0, tk.END)
+        entry_widget.insert(0, str(new_step))
+    except ValueError:
+        entry_widget.delete(0, tk.END)
+        entry_widget.insert(0, "0")
+
+def decrement_step(entry_widget, step):
+    try:
+        current_step = float(entry_widget.get())
+        new_step = max(current_step + step, 0.05)
+        entry_widget.delete(0, tk.END)
+        entry_widget.insert(0, str(new_step))
+    except ValueError:
+        entry_widget.delete(0, tk.END)
+        entry_widget.insert(0, "0")
 #=============================================================================================================
 # Aqui comienza la estructura de la interfaz grafica, se declara un root
 #=============================================================================================================
@@ -373,12 +393,49 @@ notebook.add(tab2, text='Servo Test')
 #=============================================================================================================
 # Brief: Aqui se pueden definir variables de control como el valor de los PID's etc.
 tab3 = ttk.Frame(notebook)
-notebook.add(tab3, text='Control Config')
-toggle_tab3 = ttk.Button(tab3, text='Toggle Fullscreen', command=toggle_fullscreen)
-toggle_tab3.pack(side=tk.TOP, pady=5, ipady=10)
+tab3_frame = ttk.Frame(tab3, padding=10)
+tab3_frame.pack(expand=True)
+row_num = 0
 
-# Se crea el boton para hacer toggle a fullscreen
-fullscreen_button = ttk.Button(root, text='Toggle fullscreen', command=toggle_fullscreen)
-fullscreen_button.pack(side=tk.BOTTOM, pady=5, ipady=10)
+# Fullscreen button
+toggle_tab3 = ttk.Button(tab3_frame, text='Toggle Fullscreen', command=toggle_fullscreen)
+toggle_tab3.grid(row=row_num, column=0, columnspan=3, pady=10, ipady=10)
+row_num += 1
+
+# Define step delay
+ttk.Label(tab3_frame, text='Step Delay').grid(row=row_num, column=0, columnspan=3, pady=2)
+row_num += 1
+
+step_entry = ttk.Entry(tab3_frame)
+step_entry.insert(0, '0.1')
+step_entry.grid(row=row_num, column=0, padx=5, pady=5)
+sdec_button = ttk.Button(tab3_frame, text='-', width=2, command=lambda: decrement_step(step_entry, 0.1))
+sdec_button.grid(row=row_num, column=1, padx=2, pady=5)
+sinc_button = ttk.Button(tab3_frame, text='+', width=2, command=lambda: increment_step(step_entry, 0.1))
+sinc_button.grid(row=row_num, column=2, padx=2, pady=5)
+row_num+=1
+
+# Define movement duration
+ttk.Label(tab3_frame, text='Movement Duration').grid(row=row_num, column=0, columnspan=3, pady=2)
+row_num += 1
+
+mov_entry = ttk.Entry(tab3_frame)
+mov_entry.insert(0, '1.5')
+mov_entry.grid(row=row_num, column=0, padx=5, pady=5)
+mdec_button = ttk.Button(tab3_frame, text='-', width=2, command=lambda: decrement_step(mov_entry, 0.5))
+mdec_button.grid(row=row_num, column=1, padx=2, pady=5)
+minc_button = ttk.Button(tab3_frame, text='+', width=2, command=lambda: increment_step(mov_entry, 0.5))
+minc_button.grid(row=row_num, column=2, padx=2, pady=5)
+row_num += 1
+
+# Update button
+update_button = ttk.Button(tab3_frame, text='Update Values', command=lambda: control.update_values(step_entry, mov_entry))
+update_button.grid(row=row_num, column=0, columnspan=3, pady=5)
+
+notebook.add(tab3, text='Configuration')
+
+# Se crea el boton para hacer toggle a fullscreen (Este bloque de código se podrá quitar)
+#fullscreen_button = ttk.Button(root, text='Toggle fullscreen', command=toggle_fullscreen)
+#fullscreen_button.pack(side=tk.BOTTOM, pady=5, ipady=10)
 
 root.mainloop()
