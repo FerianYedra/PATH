@@ -135,7 +135,7 @@ def increment_step(entry_widget, step):
 def decrement_step(entry_widget, step):
     try:
         current_step = float(entry_widget.get())
-        new_step = max(current_step + step, 0.05)
+        new_step = max(current_step - step, 0.05)
         entry_widget.delete(0, tk.END)
         entry_widget.insert(0, str(new_step))
     except ValueError:
@@ -384,6 +384,10 @@ home_button.pack(side=tk.LEFT, padx=5)
 forward_button = ttk.Button(button_frame, text='Test Forward (1)', command=control.forward1)
 forward_button.pack(side=tk.LEFT, padx=5)
 
+# Rotate Button Test
+rotate_button = ttk.Button(button_frame, text='Test Rotate (1)', command=control.rotate1)
+rotate_button.pack(side=tk.LEFT, padx=5)
+
 # Add Tab 2 to notebook
 notebook.add(tab2, text='Servo Test')
 
@@ -411,7 +415,7 @@ step_entry.insert(0, '0.1')
 step_entry.grid(row=row_num, column=0, padx=5, pady=5)
 sdec_button = ttk.Button(tab3_frame, text='-', width=2, command=lambda: decrement_step(step_entry, 0.1))
 sdec_button.grid(row=row_num, column=1, padx=2, pady=5)
-sinc_button = ttk.Button(tab3_frame, text='+', width=2, command=lambda: increment_step(step_entry, 0.1))
+sinc_button = ttk.Button(tab3_frame, text='+', width=2, command=lambda: crement_step(step_entry, 0.1))
 sinc_button.grid(row=row_num, column=2, padx=2, pady=5)
 row_num+=1
 

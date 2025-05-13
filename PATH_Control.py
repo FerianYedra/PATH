@@ -115,14 +115,6 @@ def move_servo_smooth(gpio, target_angle, duration_sec=DEFAULT_DURATION):
         print(f'Error moviendo servo en {gpio}: {e}')
         return False
 
-def execute_trajectory(waypoints):
-    if not waypoints:
-        messagebox.showerror('Alerta', 'La trayectoria no se ha definido')
-        return
-
-    print('Ejecutando trayectoria')
-    messagebox.showinfo('Trayectoria mandada a ejecutar', 'Espere a que se termine la trayectoria actual.')
-    print('Waypoints', waypoints)
 
 def servo_set_angle(angle, gpio):
     try:
@@ -141,7 +133,7 @@ def servo_set_angle(angle, gpio):
         messagebox.showerror('Valor inválido', f'El ángulo para el pin {gpio} debe ser un número.')
         return False
 
-def execute_servos(sEntry1, sEntry2, sEntry3, sEntry4, eEntry1, eEntry2, eEntry3, eEntry4, duration_per_servo=0.3):
+def execute_servos(sEntry1, sEntry2, sEntry3, sEntry4, eEntry1, eEntry2, eEntry3, eEntry4, duration_per_servo=1):
     # Se recuperan los valores en los inputs y se guardan en el diccionario
     servo_angles = {}
     servo_angles["shoulder_1"] = float(sEntry1.get())
@@ -215,70 +207,41 @@ def forward1():
 
     # Sequence 1
     servo_angles = {}  
-    servo_angles['elbow_3'] = 80
-    servo_angles['elbow_2'] = 120
-    servo_angles["shoulder_1"] = 40
-    move_servo(servo_angles)
-
-    # Return 1
-    servo_angles = {}
-    servo_angles["elbow_2"] = 20
-    servo_angles['elbow_3'] = 20
+    servo_angles['shoulder_2'] = 0
+    servo_angles['shoulder_3'] = 180
     move_servo(servo_angles)
 
     # Sequence 2
     servo_angles = {}
-    servo_angles['elbow_2'] = 80
-    servo_angles['elbow_3'] = 120
-    servo_angles["shoulder_4"] = 150
+    servo_angles["elbow_1"] = 110
+    servo_angles['elbow_4'] = 110
     move_servo(servo_angles)
 
-    # Return 2
-    servo_angles = {}
-    servo_angles["elbow_3"] = 20
-    servo_angles['elbow_2'] = 20
-    move_servo(servo_angles)
-
-    # Return to 90 first half
-    servo_angles = {}
-    servo_angles['shoulder_1'] = 90
-    servo_angles['shoulder_2'] = 90
-    move_servo(servo_angles)
-    
     # Sequence 3
     servo_angles = {}
-    servo_angles["elbow_4"] = 110
-    servo_angles["elbow_1"] = 70
-    servo_angles["shoulder_2"] = 130
-    move_servo(servo_angles)
-
-    # Return 3
-    servo_angles = {}
+    servo_angles['shoulder_3'] = 90
+    servo_angles['elbow_4'] = 170
     servo_angles['elbow_1'] = 170
-    servo_angles["elbow_4"] = 170
     move_servo(servo_angles)
 
     # Sequence 4
     servo_angles = {}
-    servo_angles["elbow_1"] = 110
-    servo_angles["elbow_4"] = 70
-    servo_angles["shoulder_3"] = 20
+    servo_angles["elbow_4"] = 110
+    servo_angles['elbow_1'] = 110
+    servo_angles["shoulder_2"] = 90
     move_servo(servo_angles)
 
-    # Return 4
+    # Sequence 5
     servo_angles = {}
-    servo_angles["elbow_4"] = 170
-    servo_angles["elbow_1"] = 170
+    servo_angles['elbow_1'] = 170
+    servo_angles['elbow_4'] = 170
     move_servo(servo_angles)
-     
-    # Return to 90 seccond half
+    
+def rotate1():
+    print('Rotate 1')
     servo_angles = {}
-    servo_angles['shoulder_3'] = 90
-    servo_angles['shoulder_4'] = 90
-    move_servo(servo_angles)
 
-    #Test to complete 
-    servo_angles = {}
+    # Move to home
     servo_angles["elbow_1"] = 170
     servo_angles["elbow_2"] = 20
     servo_angles["elbow_3"] = 20
@@ -289,4 +252,100 @@ def forward1():
     servo_angles["shoulder_4"] = 90
     move_servo(servo_angles)
 
-    messagebox.showinfo('Forward 1','Movimiento terminado')
+    # Sequence 1
+    servo_angles = {}
+    servo_angles["elbow_1"] = 110
+    servo_angles["elbow_4"] = 110
+    servo_angles["shoulder_3"] = 180
+    move_servo(servo_angles)
+
+    # Sequence 2
+    servo_angles = {}
+    servo_angles["elbow_4"] = 170
+    servo_angles["elbow_1"] = 170
+    move_servo(servo_angles)
+
+    # Sequence 4
+    servo_angles = {}
+    servo_angles["elbow_4"] = 110
+    servo_angles["elbow_1"] = 110
+    servo_angles["shoulder_2"] = 160
+    move_servo(servo_angles)
+
+    # Sequence 5
+    servo_angles = {}
+    servo_angles["elbow_1"] = 170
+    servo_angles["elbow_4"] = 170
+    move_servo(servo_angles)
+
+
+    # Sequence 6
+    servo_angles = {}
+    servo_angles["elbow_3"] = 80
+    servo_angles["elbow_2"] = 80
+    servo_angles["shoulder_1"] = 180
+    move_servo(servo_angles)
+
+    # Sequence 7
+    servo_angles = {}
+    servo_angles["elbow_2"] = 20
+    servo_angles["elbow_3"] = 20
+    move_servo(servo_angles)
+
+    # Sequence 8
+    servo_angles = {}
+    servo_angles["elbow_2"] = 80
+    servo_angles["elbow_3"] = 80
+    servo_angles["shoulder_4"] = 180
+    move_servo(servo_angles)
+
+    # Sequence 9
+    servo_angles = {}
+    servo_angles["elbow_3"] = 20
+    servo_angles["elbow_2"] = 20
+    move_servo(servo_angles)
+
+    # Sequence 10
+    servo_angles = {}
+    servo_angles["shoulder_3"] = 90
+    servo_angles["shoulder_4"] = 90
+    servo_angles["shoulder_2"] = 90
+    servo_angles["shoulder_1"] = 90
+    move_servo(servo_angles)
+
+
+def execute_trajectory(waypoints):
+    if not waypoints:
+        messagebox.showerror('Alerta', 'La trayectoria no se ha definido')
+        return
+    x0 = 0
+    y0 = 0
+    print('Waypoints:', waypoints) 
+    for i, data in enumerate(waypoints):
+        if i == 0:
+            continue
+
+        x1 = int(data[0]) * math.cos(data[1] * math.pi / 180)
+        y1 = int(data[0]) * math.sin(data[1] * math.pi / 180)
+
+        X = x1 - x0
+        Y = y1 - y0
+
+        dist = int(math.sqrt(X**2 + Y**2))
+        rot = math.atan(Y/X)
+
+        print(f'Moviendo a waypoint {i} de {len(waypoints)-1}: ({data[0]},{data[1]})')
+        print(f'Item {i}:  distance: {dist}, rotation: {rot}')
+        for j in range(dist):
+            if dist != 0:
+                print(f'Ejecutando forward1: {j}')
+                forward1()
+            else:
+                print('Trayectoria con distancia vacía.')
+        
+        # Update initial Point
+        x0 = x1
+        y0 = y1
+
+    print('Ejecutando trayectoria')
+    messagebox.showinfo('Trayectoria mandada a ejecutar', 'Espere a que se termine la trayectoria actual.')
