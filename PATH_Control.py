@@ -332,10 +332,20 @@ def execute_trajectory(waypoints):
         Y = y1 - y0
 
         dist = int(math.sqrt(X**2 + Y**2))
-        rot = math.atan(Y/X)
+        rot = math.degrees(math.atan2(Y/X))
 
         print(f'Moviendo a waypoint {i} de {len(waypoints)-1}: ({data[0]},{data[1]})')
         print(f'Item {i}:  distance: {dist}, rotation: {rot}')
+
+        # Se efectua el giro
+        for k in range(int(rot/10)):
+            if rot != 0:
+                print(f'Ejecutando rotate1: {k}')
+                rotate1()
+            else:
+                print('Trayectoria con rotación vacía')
+
+        # Se efectua el desplazamiento lineal
         for j in range(dist):
             if dist != 0:
                 print(f'Ejecutando forward1: {j}')
